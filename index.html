@@ -11,16 +11,16 @@
        VARIABLES
     ===================================================== */
     :root {
-      --lav:        #C8B8E8;
-      --lav-light:  #E8E0F5;
-      --lav-deep:   #A898CC;
-      --lav-bg:     #B5A4D8;
-      --offwhite:   #F5F3EF;
-      --charcoal:   #2A2825;
-      --char-soft:  #3E3A36;
-      --mid:        #8A837A;
-      --line:       rgba(200,184,232,0.35);
-      --line-dark:  rgba(42,40,37,0.13);
+      --lav:        #D3B3FF;
+      --lav-light:  #F0E5FF;
+      --lav-deep:   #9C5BFF;
+      --lav-bg:     #B88AFF;
+      --offwhite:   #FCFAFF;
+      --charcoal:   #3B185F;
+      --char-soft:  #4E217C;
+      --mid:        #9B88B5;
+      --line:       rgba(211,179,255,0.35);
+      --line-dark:  rgba(59,24,95,0.13);
       --serif:      'Cormorant Garamond', Georgia, serif;
       --sans:       'Jost', sans-serif;
       --ease:       cubic-bezier(0.4,0,0.2,1);
@@ -31,66 +31,43 @@
     ===================================================== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-    body { font-family: var(--sans); background: var(--offwhite); color: var(--charcoal); overflow-x: hidden; cursor: none; }
+    body { font-family: var(--sans); background: var(--offwhite); color: var(--charcoal); overflow-x: hidden; }
     img  { max-width: 100%; display: block; }
     a    { text-decoration: none; }
 
-    /* =====================================================
-       CUSTOM CURSOR (desktop only)
-    ===================================================== */
-    .cursor, .cursor-dot {
-      position: fixed; pointer-events: none; z-index: 99999;
-      transform: translate(-50%,-50%);
-    }
-    .cursor {
-      width: 20px; height: 20px; top: 0; left: 0;
-      transition: transform 0.2s var(--ease);
-    }
-    .cursor::before, .cursor::after {
-      content: ''; position: absolute; background: var(--lav-deep);
-    }
-    .cursor::before { width: 18px; height: 1px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .cursor::after  { width: 1px; height: 18px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-    .cursor-dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--lav-deep); top: 0; left: 0;
-    }
-    .cursor.big { transform: translate(-50%,-50%) scale(1.8); }
-    .cursor.big ~ .cursor-dot { opacity: 0; }
-    @media (hover: none) { .cursor, .cursor-dot { display: none; } body { cursor: auto; } }
 
     /* =====================================================
        LOADER
     ===================================================== */
     #loader {
       position: fixed; inset: 0; z-index: 9999;
-      background: var(--lav-bg);
+      background: var(--offwhite);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 16px;
       transition: opacity 0.7s var(--ease), visibility 0.7s;
     }
     #loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
     .loader-logo-img {
-      width: 88px; height: 88px; object-fit: contain;
+      width: clamp(80px, 15vw, 120px); height: auto; object-fit: contain;
       animation: lPulse 1.8s ease-in-out infinite;
     }
     .loader-fallback-svg {
       width: 88px; height: 88px;
-      stroke: white; fill: none; stroke-width: 1.3; stroke-linecap: round;
+      stroke: var(--lav-deep); fill: none; stroke-width: 1.3; stroke-linecap: round;
       animation: lPulse 1.8s ease-in-out infinite;
     }
     .loader-name {
-      font-family: var(--serif); font-size: clamp(2.8rem,10vw,3.8rem);
-      font-weight: 300; color: white; letter-spacing: 0.2em;
+      font-family: var(--sans); font-size: clamp(2rem,8vw,3rem);
+      font-weight: 300; color: var(--charcoal); letter-spacing: 0.1em;
     }
     .loader-sub {
-      font-family: var(--sans); font-size: 0.6rem; font-weight: 200;
+      font-family: var(--sans); font-size: 0.6rem; font-weight: 300;
       letter-spacing: 0.35em; text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
+      color: var(--mid);
     }
     .loader-bar {
       position: absolute; bottom: 0; left: 0;
-      height: 2px; background: white;
+      height: 3px; background: var(--lav-bg);
       animation: lBar 2.3s var(--ease) forwards;
     }
     @keyframes lBar   { from{width:0} to{width:100%} }
@@ -637,9 +614,6 @@
 </head>
 <body>
 
-<!-- Cursor -->
-<div class="cursor" id="cur"></div>
-<div class="cursor-dot" id="curDot"></div>
 
 <!-- Grain -->
 <div class="grain"></div>
@@ -649,15 +623,7 @@
 
 <!-- ===================== LOADER ===================== -->
 <div id="loader">
-  <img src="logo.png" alt="daraj" class="loader-logo-img"
-       onerror="this.style.display='none';document.getElementById('lsvg').style.display='block'"/>
-  <svg id="lsvg" class="loader-fallback-svg" viewBox="0 0 100 100" style="display:none">
-    <path d="M50 8C46 13 41 20 41 27C41 33 45 36 50 36C55 36 59 33 59 27C59 20 54 13 50 8Z"/>
-    <line x1="50" y1="36" x2="50" y2="56"/>
-    <path d="M50 44C46 41 41 41 40 43" fill="none"/><path d="M50 49C54 46 59 46 60 48" fill="none"/>
-    <path d="M28 66A26 26 0 1 1 72 66" fill="none"/>
-    <path d="M33 67A19 19 0 1 1 67 67" fill="none"/>
-  </svg>
+  <img src="logo.png" alt="daraj" class="loader-logo-img"/>
   <div class="loader-name">daraj</div>
   <div class="loader-sub">Specialty Coffee · Mar Mikhael</div>
   <div class="loader-bar"></div>
@@ -666,7 +632,7 @@
 <!-- ===================== NAV ===================== -->
 <nav id="nav">
   <a href="#hero" class="nav-brand">
-    <img src="logo.png" alt="" onerror="this.style.display='none'"/>
+    <img src="logo.png" alt=""/>
     <span class="nav-brand-name">daraj</span>
   </a>
   <button class="hamburger" id="burger" aria-label="Open menu">
@@ -684,16 +650,7 @@
 <section id="hero">
   <div class="hero-inner">
     <div class="hero-logo-wrap">
-      <img src="logo.png" alt="daraj"
-           onerror="this.style.display='none';document.getElementById('hsvg').style.display='block'"/>
-      <svg id="hsvg" class="hero-logo-fallback" viewBox="0 0 100 100" style="display:none">
-        <path d="M50 8C46 13 41 20 41 27C41 33 45 36 50 36C55 36 59 33 59 27C59 20 54 13 50 8Z" fill="none"/>
-        <line x1="50" y1="36" x2="50" y2="56"/>
-        <path d="M50 44C46 41 41 41 40 43" fill="none"/>
-        <path d="M50 49C54 46 59 46 60 48" fill="none"/>
-        <path d="M28 66A26 26 0 1 1 72 66" fill="none"/>
-        <path d="M33 67A19 19 0 1 1 67 67" fill="none"/>
-      </svg>
+      <img src="logo.png" alt="daraj"/>
     </div>
     <p class="hero-eyebrow">Est. Mar Mikhael, Beirut</p>
     <h1 class="hero-title">daraj</h1>
@@ -1029,7 +986,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="logo.png" alt="daraj" onerror="this.style.display='none'"/>
+      <img src="logo.png" alt="daraj"/>
       <div class="footer-brand-text">
         <span class="footer-name">daraj</span>
         <span class="footer-tag">Specialty Coffee · Mar Mikhael</span>
@@ -1055,25 +1012,6 @@
   });
   document.body.style.overflow = 'hidden';
 
-  /* ===== CURSOR ===== */
-  const cur = document.getElementById('cur');
-  const dot = document.getElementById('curDot');
-  if (window.matchMedia('(hover:hover)').matches) {
-    let mx=0,my=0,dx=0,dy=0;
-    document.addEventListener('mousemove', e => {
-      mx=e.clientX; my=e.clientY;
-      cur.style.left=mx+'px'; cur.style.top=my+'px';
-    });
-    (function tick(){
-      dx+=(mx-dx)*.18; dy+=(my-dy)*.18;
-      dot.style.left=dx+'px'; dot.style.top=dy+'px';
-      requestAnimationFrame(tick);
-    })();
-    document.querySelectorAll('a,button,.mi').forEach(el=>{
-      el.addEventListener('mouseenter',()=>cur.classList.add('big'));
-      el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
-    });
-  }
 
   /* ===== NAV ===== */
   const navEl   = document.getElementById('nav');
